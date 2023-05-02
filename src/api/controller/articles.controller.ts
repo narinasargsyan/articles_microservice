@@ -1,54 +1,59 @@
 import * as bcrypt from "bcrypt";
 import { models } from "../../db";
 import authService from "../services/auth.service";
-
 class ArticleController {
-
-  createArticle = async (req, res) => {
+  private articleRepository: any;
+  constructor(articleRepository) {
+    this.articleRepository = articleRepository;
+  }
+  userCreateArticle = async (req, res) => {
     try {
-      const { firstName, lastName, email, password } = req.body;
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-      await models.Admins.create({
-        firstName,
-        lastName,
-        email,
-        password: hashedPassword,
+      const { text,userId } = req.body;
+      await this.articleRepository.create({
+        text,
+        userId
       });
-      res.send("You have successfully registered as admin!");
+      res.send("You have successfully added article as user!");
     } catch (err) {
       res.status(400).send("Something went wrong");
       console.log("error=>", err);
     }
   };
 
-  signIn = async (req, res) => {
+  userUpdateArticle = async (req, res) => {
     try {
-      const { email, password } = req.body;
-      const isAdminExists = await models.Admins.findOne({ where: { email } });
-      if (!isAdminExists) {
-        res.status(400).send("Admin not exists");
-        return;
-      }
-      const validPassword = bcrypt.compare(password, isAdminExists.password);
-      if (!validPassword) {
-        res.status(400).send("Credentials are invalid");
-        return;
-      }
-
-      const auth = { email, id: String(isAdminExists.id) };
-      const accessToken = await authService.signAccessToken(auth);
-
-      const result = {
-        accessToken,
-      };
-      res.status(200).send(result);
+      const { text,userId } = req.body;
+      const article = this.articleRepository.findOne({ userId, text})
+      await this.articleRepository.update( { id:article.id }, { text });
+      res.send("You have successfully updated article as user!");
     } catch (err) {
-      console.log("err", err);
       res.status(400).send("Something went wrong");
       console.log("error=>", err);
     }
   };
+
+  adminUpdateArticle = async (req, res) => {
+    try {
+      const { text, editorId, id } = req.body;
+      await this.articleRepository.update({ id }, { text, editorId });
+      res.send("You have successfully updated article as admin!");
+    } catch (err) {
+      res.status(400).send("Something went wrong");
+      console.log("error=>", err);
+    }
+  };
+
+  adminDeleteArticle = async (req, res) => {
+    try {
+      const { editorId, id } = req.body;
+      await this.articleRepository.update({ id },{ editorId, deleted: true});
+      res.send("You have successfully added article as user!");
+    } catch (err) {
+      res.status(400).send("Something went wrong");
+      console.log("error=>", err);
+    }
+  };
+
 }
 
 export default ArticleController;

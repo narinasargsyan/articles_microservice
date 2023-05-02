@@ -19,6 +19,10 @@ const articlesModel = {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  deleted: {
+    type:Sequelize.BOOLEAN,
+    defaultValue: false
+  },
   createdAt: {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW,
