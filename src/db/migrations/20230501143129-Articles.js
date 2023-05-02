@@ -16,7 +16,7 @@ module.exports = {
       },
       editorId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       text: {
         type: Sequelize.STRING,

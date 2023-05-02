@@ -1,16 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
-import * as redis from "redis";
-import bluebird from "bluebird";
 import { Sequelize } from "sequelize";
 import dbConfig from "../configs";
 type DB = {
   [key: string]: any;
   Sequelize?: Sequelize;
 };
-
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
 
 const baseName = path.basename(__filename);
 const db: DB = {};
@@ -49,14 +44,4 @@ sequelize
   });
 db.Sequelize = sequelize;
 
-const client = redis.createClient({
-  socket: {
-    host: "localhost",
-    port: 6379,
-  },
-});
-client.on("ready", () => console.log("Redis: Connection ready redis"));
-bluebird.promisifyAll(redis);
-client.on("error", (err) => console.error("Redis: Connection error", err));
-db.redis = client;
 export default db;

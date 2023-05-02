@@ -1,17 +1,21 @@
 import { Response, Request } from "express";
+import ArticleRepository from "../repositories/article.repository";
+import articleRepository from "../repositories/article.repository";
+
 class ArticleController {
-  private articleRepository: any;
+  public articleRepository: ArticleRepository;
   constructor(articleRepository) {
     this.articleRepository = articleRepository;
   }
+
   userCreateArticle = async (req: Request, res: Response) => {
     try {
-      const { text,userId } = req.body;
+      const { text, userId } = req.body;
       await this.articleRepository.create({
         text,
         userId
       });
-      res.send("You have successfully added article as user!");
+      return res.send("You have successfully create article as user!");
     } catch (err) {
       res.status(400).send("Something went wrong");
       console.log("error=>", err);
@@ -20,10 +24,10 @@ class ArticleController {
 
   userUpdateArticle = async (req: Request, res: Response) => {
     try {
-      const { text,userId } = req.body;
-      const article = this.articleRepository.findOne({ userId, text})
-      await this.articleRepository.update( { id:article.id }, { text });
-      res.send("You have successfully updated article as user!");
+      const { text, userId, articleId } = req.body;
+      const article = await this.articleRepository.findOne({ id: articleId, userId });
+      await this.articleRepository.update( { id: article.id }, { text });
+      return res.send("You have successfully updated article as user!");
     } catch (err) {
       res.status(400).send("Something went wrong");
       console.log("error=>", err);
@@ -32,9 +36,9 @@ class ArticleController {
 
   adminUpdateArticle = async (req: Request, res: Response) => {
     try {
-      const { text, editorId, id } = req.body;
-      await this.articleRepository.update({ id }, { text, editorId });
-      res.send("You have successfully updated article as admin!");
+      const { text, editorId, articleId } = req.body;
+      await this.articleRepository.update({ id:articleId }, { text, editorId });
+      return res.send("You have successfully updated article as admin!");
     } catch (err) {
       res.status(400).send("Something went wrong");
       console.log("error=>", err);
@@ -43,15 +47,14 @@ class ArticleController {
 
   adminDeleteArticle = async (req: Request, res: Response) => {
     try {
-      const { editorId, id } = req.body;
-      await this.articleRepository.update({ id },{ editorId, deleted: true});
-      res.send("You have successfully added article as user!");
+      const { editorId, articleId } = req.body;
+      await this.articleRepository.update({ id: articleId },{ editorId, deleted: true});
+      return res.send("You have successfully delete article as admin!");
     } catch (err) {
       res.status(400).send("Something went wrong");
       console.log("error=>", err);
     }
   };
-
 }
 
 export default ArticleController;
