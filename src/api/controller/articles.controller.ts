@@ -1,12 +1,10 @@
-import * as bcrypt from "bcrypt";
-import { models } from "../../db";
-import authService from "../services/auth.service";
+import { Response, Request } from "express";
 class ArticleController {
   private articleRepository: any;
   constructor(articleRepository) {
     this.articleRepository = articleRepository;
   }
-  userCreateArticle = async (req, res) => {
+  userCreateArticle = async (req: Request, res: Response) => {
     try {
       const { text,userId } = req.body;
       await this.articleRepository.create({
@@ -20,7 +18,7 @@ class ArticleController {
     }
   };
 
-  userUpdateArticle = async (req, res) => {
+  userUpdateArticle = async (req: Request, res: Response) => {
     try {
       const { text,userId } = req.body;
       const article = this.articleRepository.findOne({ userId, text})
@@ -32,7 +30,7 @@ class ArticleController {
     }
   };
 
-  adminUpdateArticle = async (req, res) => {
+  adminUpdateArticle = async (req: Request, res: Response) => {
     try {
       const { text, editorId, id } = req.body;
       await this.articleRepository.update({ id }, { text, editorId });
@@ -43,7 +41,7 @@ class ArticleController {
     }
   };
 
-  adminDeleteArticle = async (req, res) => {
+  adminDeleteArticle = async (req: Request, res: Response) => {
     try {
       const { editorId, id } = req.body;
       await this.articleRepository.update({ id },{ editorId, deleted: true});

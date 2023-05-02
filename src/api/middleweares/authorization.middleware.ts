@@ -1,5 +1,6 @@
+import { Response, Request, NextFunction} from "express";
 class AuthorizationMiddleware {
-    checkKey(req, res, next) {
+    checkKey(req: Request, res: Response, next: NextFunction) {
         if (req.headers.x_auth !== process.env.X_AUTH) {
             res.sendStatus(401);
             return;
