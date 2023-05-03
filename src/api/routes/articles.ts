@@ -1,6 +1,7 @@
 import * as express from "express";
 import db from "../../db/models"
 const articlesRouter = express.Router();
+import validate from "../middleweares/validation/validate";
 import ArticleController from "../controller/articles.controller";
 import ArticleRepository from "../repositories/article.repository";
 
@@ -10,7 +11,7 @@ const article = new ArticleController(articleRepository);
 
 articlesRouter.post("/user/create", article.userCreateArticle);
 articlesRouter.put("/user/update", article.userUpdateArticle);
-articlesRouter.get("/admin/list", article.adminGetList);
+articlesRouter.get("/admin/list", validate("adminGetListSchema"),article.adminGetList);
 articlesRouter.put("/admin/update", article.adminUpdateArticle);
 articlesRouter.delete("/admin/delete", article.adminDeleteArticle);
 

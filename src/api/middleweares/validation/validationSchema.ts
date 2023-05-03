@@ -6,22 +6,11 @@ export const validationSchema = {
     statusCode: 422,
     keyByField: true,
   },
-  signUpAdminsSchema: {
+  adminGetListSchema: {
     body: Joi.object({
-      firstName: Joi.string().required(),
-      lastName: Joi.string().required(),
-      email: Joi.string().email().required(),
-      password: Joi.string()
-        .regex(/[a-zA-Z0-9]{3,30}/)
-        .required(),
-    }),
-  },
-  signInAdminsSchema: {
-    body: Joi.object({
-      email: Joi.string().email().required(),
-      password: Joi.string()
-        .regex(/[a-zA-Z0-9]{3,30}/)
-        .required(),
+      userId: Joi.number(),
+      text: Joi.string(),
+      id: Joi.number(),
     }),
   },
 };
