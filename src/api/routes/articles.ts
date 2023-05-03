@@ -10,6 +10,9 @@ const article = new ArticleController(articleRepository);
 
 articlesRouter.post("/user/create", article.userCreateArticle);
 articlesRouter.put("/user/update", article.userUpdateArticle);
+articlesRouter.get("/admin/?id", article.adminGetArticleById);
+articlesRouter.get("/admin/?userId", article.adminGetArticlesByUserId);
+articlesRouter.get("/admin/list", article.adminGetList);
 articlesRouter.put("/admin/update", article.adminUpdateArticle);
 articlesRouter.delete("/admin/delete", article.adminDeleteArticle);
 

@@ -5,6 +5,10 @@
         this.model = model;
     }
 
+     async findAll(where?: object, order: object = {}, options: object = {}) {
+         return this.model.findAll({ where, ...order, ...options });
+     }
+
     async findOne(where: object, options: object = {}) {
         return this.model.findOne({ where, ...options } );
     }

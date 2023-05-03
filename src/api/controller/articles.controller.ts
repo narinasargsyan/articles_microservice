@@ -45,6 +45,41 @@ class ArticleController {
     }
   };
 
+  adminGetArticleById = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.query;
+      const article = await this.articleRepository.findOne({ id });
+      if (!article) {
+        res.status(400).send("Article not found");
+      };
+      return res.send(article);
+    } catch (err) {
+      res.status(400).send("Something went wrong");
+      console.log("error=>", err);
+    }
+  };
+
+  adminGetArticlesByUserId = async (req: Request, res: Response) => {
+    try {
+      const { userId } = req.query;
+      const articles = await this.articleRepository.findAll({ userId });
+      return res.send(articles);
+    } catch (err) {
+      res.status(400).send("Something went wrong");
+      console.log("error=>", err);
+    }
+  };
+
+  adminGetList = async (req: Request, res: Response) => {
+    try {
+      const articles = await this.articleRepository.findAll();
+      return res.send(articles);
+    } catch (err) {
+      res.status(400).send("Something went wrong");
+      console.log("error=>", err);
+    }
+  };
+
   adminDeleteArticle = async (req: Request, res: Response) => {
     try {
       const { editorId, articleId } = req.body;
