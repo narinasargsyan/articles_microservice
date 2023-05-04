@@ -15,7 +15,7 @@ class AuthorizationMiddleware {
         } else {
             next();
         }
-    }
+    };
 
     async authenticate(req: Request & { payload: string , accessToken: string }, res: Response, next: NextFunction) {
         try {
@@ -40,9 +40,6 @@ class AuthorizationMiddleware {
             if (!isAccessTokenVerified) {
                 res.status(401).send("Invalid token");
             }
-            if(!isAccessTokenVerified.isUser) {
-              res.status(401).send("Permission denied")
-            }
 
             req.payload = isAccessTokenVerified;
             req.accessToken = token;
@@ -50,42 +47,29 @@ class AuthorizationMiddleware {
         } catch (e) {
             return next(e);
         }
-    }
+    };
 
-    async authenticateAdmin(req: Request & { payload: string , accessToken: string }, res: Response, next: NextFunction) {
+    async isAdmin(req: Request & { isAccessTokenVerified: object & { isAdmin:boolean } }, res: Response, next: NextFunction) {
         try {
-            const { authorization } = req.headers;
-            if (!authorization) {
-                res.status(401).send("Token not provided");
-            }
-
-            const token = authorization.split("Bearer ")[1].trim();
-
-            if (!token) {
-                res.status(401).send("Token not provided");
-            }
-            const isTokenExistOnRedis = await this.authService.getTokenFromRedis(
-                `accessToken:${token}`
-            );
-
-            if (!isTokenExistOnRedis) {
-                res.status(401).send("Invalid token");
-            }
-            const isAccessTokenVerified = await this.authService.verifyAccessToken(token);
-            if (!isAccessTokenVerified) {
-                res.status(401).send("Invalid token");
-            }
-            if(!isAccessTokenVerified.isAdmin) {
+            if(!req.isAccessTokenVerified.isAdmin){
                 res.status(401).send("Permission denied")
             }
-
-            req.payload = isAccessTokenVerified;
-            req.accessToken = token;
             return next();
         } catch (e) {
             return next(e);
         }
-    }
+    };
+
+    async isUser(req: Request & { isAccessTokenVerified: object & { isUser:boolean } }, res: Response, next: NextFunction) {
+        try {
+            if(!req.isAccessTokenVerified.isUser){
+                res.status(401).send("Permission denied")
+            }
+            return next();
+        } catch (e) {
+            return next(e);
+        }
+    };
 }
 
 export = AuthorizationMiddleware;

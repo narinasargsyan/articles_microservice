@@ -9,7 +9,7 @@ const articleRepository = new ArticleRepository(db.Articles);
 const authorizationMiddleware = new AuthorizationMiddleware();
 const article = new UserArticleController(articleRepository);
 
-userArticlesRouter.use(authorizationMiddleware.authenticate);
+userArticlesRouter.use(authorizationMiddleware.authenticate, authorizationMiddleware.isUser);
 
 userArticlesRouter.post("/user/create", article.userCreateArticle);
 userArticlesRouter.put("/user/update", article.userUpdateArticle);

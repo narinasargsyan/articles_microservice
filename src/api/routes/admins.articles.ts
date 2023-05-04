@@ -10,7 +10,7 @@ const articleRepository = new ArticleRepository(db.Articles);
 const authorizationMiddleware = new AuthorizationMiddleware();
 const article = new AdminArticleController(articleRepository);
 
-adminArticlesRouter.use(authorizationMiddleware.authenticateAdmin);
+adminArticlesRouter.use(authorizationMiddleware.authenticate, authorizationMiddleware.isAdmin);
 
 adminArticlesRouter.get("/admin/list", validate("adminGetListSchema"),article.adminGetList);
 adminArticlesRouter.put("/admin/update", article.adminUpdateArticle);
