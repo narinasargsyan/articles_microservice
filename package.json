@@ -5,7 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node ./src/server.ts"
+    "start": "ts-node ./src/server.ts",
+    "migrate": "sequelize db:migrate"
   },
   "author": "",
   "license": "ISC",
@@ -26,9 +27,9 @@
     "aws-sdk": "^2.1318.0",
     "bcrypt": "^5.1.0",
     "bluebird": "^3.7.2",
+    "common_auth": "git@github.com/narinasargsyan/common_auth.git",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "common_auth": "git@github.com/narinasargsyan/common_auth.git",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^3.4.1",
@@ -42,8 +43,8 @@
     "pg": "^8.9.0",
     "redis": "^3.1.2",
     "redis-connection": "^5.4.0",
-    "sequelize": "^6.31.0",
-    "sequelize-cli": "^6.5.2",
+    "sequelize": "^6.3.1",
+    "sequelize-cli": "^6.2.0",
     "ts-node": "^10.9.1"
   }
 }
