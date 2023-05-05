@@ -11,7 +11,7 @@ const article = new UserArticleController(articleRepository);
 
 userArticlesRouter.use(authorizationMiddleware.authenticate, authorizationMiddleware.isUser);
 
-userArticlesRouter.post("/user/create", article.userCreateArticle);
-userArticlesRouter.put("/user/update", article.userUpdateArticle);
+userArticlesRouter.post("/create", article.userCreateArticle);
+userArticlesRouter.put("/update", article.userUpdateArticle);
 
 export { userArticlesRouter };
