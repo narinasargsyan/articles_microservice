@@ -13,7 +13,7 @@ app.use(express.json());
 
 app.use(AuthorizationMiddleware.checkKey);
 
-app.use("/articles/api", userArticlesRouter);
-app.use("/articles/api", adminArticlesRouter);
+app.use("/articles/api/user", userArticlesRouter);
+app.use("/articles/api/admin", adminArticlesRouter);
 
 app.listen(process.env.APP_PORT);

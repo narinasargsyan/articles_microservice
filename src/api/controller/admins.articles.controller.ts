@@ -11,7 +11,7 @@ class AdminArticleController {
         try {
             const { text, editorId, articleId } = req.body;
             await this.articleRepository.update({ id:articleId }, { text, editorId });
-            return res.status(200);
+            return res.status(200).send("You successfully update as admin");
         } catch (err) {
             res.status(400).send("Something went wrong");
             console.log("error=>", err);
