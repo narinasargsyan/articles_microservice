@@ -17,28 +17,28 @@ class AuthorizationMiddleware {
         }
     };
 
-    async authenticate(req: Request & { payload: string , accessToken: string }, res: Response, next: NextFunction) {
+    authenticate = async (req: Request & { payload: string , accessToken: string }, res: Response, next: NextFunction) => {
         try {
             const { authorization } = req.headers;
             if (!authorization) {
-                res.status(401).send("Token not provided");
+               return res.status(401).send("Token not provided");
             }
 
             const token = authorization.split("Bearer ")[1].trim();
 
             if (!token) {
-                res.status(401).send("Token not provided");
+                return res.status(401).send("Token not provided");
             }
             const isTokenExistOnRedis = await this.authService.getTokenFromRedis(
                 `accessToken:${token}`
             );
 
             if (!isTokenExistOnRedis) {
-                res.status(401).send("Invalid token");
+                return res.status(401).send("Invalid token");
             }
             const isAccessTokenVerified = await this.authService.verifyAccessToken(token);
             if (!isAccessTokenVerified) {
-                res.status(401).send("Invalid token");
+                return  res.status(401).send("Invalid token");
             }
 
             req.payload = isAccessTokenVerified;
