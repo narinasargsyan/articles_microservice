@@ -52,7 +52,7 @@ class AuthorizationMiddleware {
     async isAdmin(req: Request & { payload: { isAdmin:boolean } }, res: Response, next: NextFunction) {
         try {
             if(!req.payload.isAdmin){
-                res.status(401).send("Permission denied")
+           return res.status(401).send("Permission denied")
             }
             return next();
         } catch (e) {
@@ -63,7 +63,7 @@ class AuthorizationMiddleware {
     async isUser(req: Request & { payload: { isUser:boolean } }, res: Response, next: NextFunction) {
         try {
             if(!req.payload.isUser){
-                res.status(401).send("Permission denied")
+               return res.status(401).send("Permission denied")
             }
             return next();
         } catch (e) {
