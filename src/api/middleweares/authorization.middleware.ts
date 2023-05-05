@@ -49,9 +49,9 @@ class AuthorizationMiddleware {
         }
     };
 
-    async isAdmin(req: Request & { isAccessTokenVerified: object & { isAdmin:boolean } }, res: Response, next: NextFunction) {
+    async isAdmin(req: Request & { payload: { isAdmin:boolean } }, res: Response, next: NextFunction) {
         try {
-            if(!req.isAccessTokenVerified.isAdmin){
+            if(!req.payload.isAdmin){
                 res.status(401).send("Permission denied")
             }
             return next();
@@ -60,9 +60,9 @@ class AuthorizationMiddleware {
         }
     };
 
-    async isUser(req: Request & { isAccessTokenVerified: object & { isUser:boolean } }, res: Response, next: NextFunction) {
+    async isUser(req: Request & { payload: { isUser:boolean } }, res: Response, next: NextFunction) {
         try {
-            if(!req.isAccessTokenVerified.isUser){
+            if(!req.payload.isUser){
                 res.status(401).send("Permission denied")
             }
             return next();
